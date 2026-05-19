@@ -36,3 +36,14 @@ describe('GET /matches', () => {
     expect(body.home_team).toBe('Riverside');
   });
 });
+
+describe('POST /matches', () => {
+  it('returns 401 when not logged in', async () => {
+    const res = await fetch(`${baseURL}/matches`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ home_team: 'Oakwood', away_team: 'Station Rd' }),
+    });
+    expect(res.status).toBe(401);
+  });
+});
