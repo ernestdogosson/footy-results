@@ -13,5 +13,13 @@ export function createApp() {
     res.json(store.listMatches());
   });
 
+  app.get('/matches/:id', (req, res) => {
+    const match = store.findMatch(req.params.id);
+    if (!match) {
+      return res.status(404).json({ error: 'Match not found' });
+    }
+    res.json(match);
+  });
+
   return app;
 }
