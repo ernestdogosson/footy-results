@@ -1,4 +1,5 @@
 import express from 'express';
+import { store } from './store.js';
 
 export function createApp() {
   const app = express();
@@ -6,6 +7,10 @@ export function createApp() {
 
   app.get('/health', (_req, res) => {
     res.json({ status: 'ok' });
+  });
+
+  app.get('/matches', (_req, res) => {
+    res.json(store.listMatches());
   });
 
   return app;
