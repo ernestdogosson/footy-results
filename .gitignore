@@ -1,0 +1,17 @@
+# dependencies
+node_modules/
+
+# environment / secrets
+.env
+.env.local
+
+# build output
+dist/
+build/
+
+# test / coverage
+coverage/
+
+# logs & os cruft
+*.log
+.DS_Store
