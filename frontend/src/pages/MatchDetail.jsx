@@ -9,17 +9,18 @@ export default function MatchDetail() {
   const [awayScore, setAwayScore] = useState('');
   const [error, setError] = useState(null);
 
-  function loadMatch() {
-    fetch(`/api/matches/${id}`).then((res) => {
-      if (res.status === 404) {
-        setNotFound(true);
-        return;
-      }
-      res.json().then(setMatch);
-    });
+  async function loadMatch() {
+    const res = await fetch(`/api/matches/${id}`);
+    if (res.status === 404) {
+      setNotFound(true);
+      return;
+    }
+    setMatch(await res.json());
   }
 
-  useEffect(loadMatch, [id]);
+  useEffect(() => {
+    loadMatch();
+  }, [id]);
 
   async function submitReport(e) {
     e.preventDefault();
@@ -60,7 +61,7 @@ export default function MatchDetail() {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold text-emerald-600 mb-4">
+      <h1 className="text-3xl font-bold text-emerald-600 mb-4 capitalize">
         {match.home_team} vs {match.away_team}
       </h1>
       {match.consensus ? (
@@ -72,7 +73,7 @@ export default function MatchDetail() {
       )}
 
       <form onSubmit={submitReport} className="flex items-end gap-2">
-        <label className="flex flex-col text-sm">
+        <label className="flex flex-col text-sm capitalize">
           {match.home_team}
           <input
             type="number"
@@ -83,7 +84,7 @@ export default function MatchDetail() {
             className="border rounded p-1 w-16"
           />
         </label>
-        <label className="flex flex-col text-sm">
+        <label className="flex flex-col text-sm capitalize">
           {match.away_team}
           <input
             type="number"

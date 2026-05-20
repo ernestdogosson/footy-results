@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { once } from 'node:events';
 import { createApp } from '../src/app.js';
 import { store } from '../src/store.js';
 
@@ -7,7 +8,7 @@ let baseURL;
 
 beforeAll(async () => {
   server = createApp().listen(0);
-  await new Promise((resolve) => server.once('listening', resolve));
+  await once(server, 'listening');
   baseURL = `http://localhost:${server.address().port}`;
 });
 
