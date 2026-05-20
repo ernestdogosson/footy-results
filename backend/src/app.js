@@ -12,11 +12,11 @@ export function createApp() {
     res.json({ status: 'ok' });
   });
 
-  app.get('/matches', (_req, res) => {
+  app.get('/api/matches', (_req, res) => {
     res.json(store.listMatches());
   });
 
-  app.get('/matches/:id', (req, res) => {
+  app.get('/api/matches/:id', (req, res) => {
     const match = store.findMatch(req.params.id);
     if (!match) {
       return res.status(404).json({ error: 'Match not found' });
@@ -25,7 +25,7 @@ export function createApp() {
     res.json({ ...match, consensus });
   });
 
-  app.post('/matches', requireAuth(), (req, res) => {
+  app.post('/api/matches', requireAuth(), (req, res) => {
     const { home_team, away_team } = req.body;
     if (!home_team || !away_team) {
       return res.status(400).json({ error: 'home_team and away_team are required' });
@@ -34,11 +34,11 @@ export function createApp() {
     res.status(201).json(match);
   });
 
-  app.get('/profile', requireAuth(), (req, res) => {
+  app.get('/api/profile', requireAuth(), (req, res) => {
     res.json(req.oidc.user);
   });
 
-  app.post('/matches/:id/reports', requireAuth(), (req, res) => {
+  app.post('/api/matches/:id/reports', requireAuth(), (req, res) => {
     const match = store.findMatch(req.params.id);
     if (!match) {
       return res.status(404).json({ error: 'Match not found' });
