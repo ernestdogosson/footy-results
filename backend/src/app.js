@@ -32,5 +32,22 @@ export function createApp() {
     res.status(201).json(match);
   });
 
+  app.post('/matches/:id/reports', requireAuth(), (req, res) => {
+    const match = store.findMatch(req.params.id);
+    if (!match) {
+      return res.status(404).json({ error: 'Match not found' });
+    }
+    const { home_score, away_score } = req.body;
+    if (typeof home_score !== 'number' || typeof away_score !== 'number') {
+      return res.status(400).json({ error: 'home_score and away_score are required' });
+    }
+    const report = store.addReport(match.id, {
+      home_score,
+      away_score,
+      sub: req.oidc.user.sub,
+    });
+    res.status(201).json(report);
+  });
+
   return app;
 }

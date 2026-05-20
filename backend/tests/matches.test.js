@@ -63,3 +63,33 @@ describe('POST /matches', () => {
     expect(typeof body.id).toBe('number');
   });
 });
+
+describe('POST /matches/:id/reports', () => {
+  it('returns 401 when not logged in', async () => {
+    const match = store.addMatch({ home_team: 'Eastside', away_team: 'Westside' });
+    const res = await fetch(`${baseURL}/matches/${match.id}/reports`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ home_score: 2, away_score: 1 }),
+    });
+    expect(res.status).toBe(401);
+  });
+
+  it('returns 201 and the report when logged in', async () => {
+    const match = store.addMatch({ home_team: 'Northtown', away_team: 'Southtown' });
+    const res = await fetch(`${baseURL}/matches/${match.id}/reports`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-test-user': 'auth0|tester',
+      },
+      body: JSON.stringify({ home_score: 3, away_score: 2 }),
+    });
+    expect(res.status).toBe(201);
+    const body = await res.json();
+    expect(body.match_id).toBe(match.id);
+    expect(body.home_score).toBe(3);
+    expect(body.away_score).toBe(2);
+    expect(body.sub).toBe('auth0|tester');
+  });
+});
