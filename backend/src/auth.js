@@ -1,5 +1,4 @@
-// named imports fail here — the package spreads requiresAuth into module.exports,
-// which node's ESM static analysis can't see through
+// named imports fail — package spreads requiresAuth into module.exports
 import pkg from 'express-openid-connect';
 const { auth, requiresAuth } = pkg;
 
@@ -21,6 +20,7 @@ export function authMiddleware() {
   return auth({
     authRequired: false,
     auth0Logout: true,
+    errorOnRequiredAuth: true,
     baseURL: process.env.BASE_URL,
     clientID: process.env.AUTH0_CLIENT_ID,
     secret: process.env.SESSION_SECRET,
