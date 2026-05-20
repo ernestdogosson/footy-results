@@ -35,6 +35,23 @@ describe('GET /matches', () => {
     expect(body.id).toBe(match.id);
     expect(body.home_team).toBe('Riverside');
   });
+
+  it('includes consensus: null when there are no reports', async () => {
+    const match = store.addMatch({ home_team: 'Lakers', away_team: 'Foxes' });
+    const res = await fetch(`${baseURL}/matches/${match.id}`);
+    const body = await res.json();
+    expect(body.consensus).toBeNull();
+  });
+
+  it('includes the agreed scoreline once enough reports match', async () => {
+    const match = store.addMatch({ home_team: 'Wolves', away_team: 'Bears' });
+    for (let i = 0; i < 3; i++) {
+      store.addReport(match.id, { home_score: 2, away_score: 1, sub: `auth0|u${i}` });
+    }
+    const res = await fetch(`${baseURL}/matches/${match.id}`);
+    const body = await res.json();
+    expect(body.consensus).toEqual({ home_score: 2, away_score: 1 });
+  });
 });
 
 describe('POST /matches', () => {

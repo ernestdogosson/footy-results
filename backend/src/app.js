@@ -1,6 +1,7 @@
 import express from 'express';
 import { store } from './store.js';
 import { authMiddleware, requireAuth } from './auth.js';
+import { getConsensus } from './consensus.js';
 
 export function createApp() {
   const app = express();
@@ -20,7 +21,8 @@ export function createApp() {
     if (!match) {
       return res.status(404).json({ error: 'Match not found' });
     }
-    res.json(match);
+    const consensus = getConsensus(store.listReportsFor(match.id));
+    res.json({ ...match, consensus });
   });
 
   app.post('/matches', requireAuth(), (req, res) => {

@@ -23,4 +23,8 @@ export const store = {
     reports.push(report);
     return report;
   },
+
+  listReportsFor(matchId) {
+    return reports.filter((r) => r.match_id === Number(matchId));
+  },
 };
