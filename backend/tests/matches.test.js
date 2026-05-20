@@ -46,4 +46,20 @@ describe('POST /matches', () => {
     });
     expect(res.status).toBe(401);
   });
+
+  it('returns 201 and the created match when logged in', async () => {
+    const res = await fetch(`${baseURL}/matches`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-test-user': 'auth0|tester',
+      },
+      body: JSON.stringify({ home_team: 'Oakwood', away_team: 'Station Rd' }),
+    });
+    expect(res.status).toBe(201);
+    const body = await res.json();
+    expect(body.home_team).toBe('Oakwood');
+    expect(body.away_team).toBe('Station Rd');
+    expect(typeof body.id).toBe('number');
+  });
 });
