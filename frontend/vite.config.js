@@ -9,6 +9,8 @@ const backendRoutes = ['/api', '/login', '/logout', '/callback'];
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
+    port: 5173,
+    strictPort: true,
     proxy: Object.fromEntries(
       backendRoutes.map((path) => [path, 'http://localhost:3000']),
     ),
