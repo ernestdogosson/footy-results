@@ -15,3 +15,6 @@ coverage/
 # logs & os cruft
 *.log
 .DS_Store
+
+# local screenshots / scratch
+artifacts/

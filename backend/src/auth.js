@@ -1,4 +1,7 @@
-import { auth, requiresAuth } from 'express-openid-connect';
+// named imports fail here — the package spreads requiresAuth into module.exports,
+// which node's ESM static analysis can't see through
+import pkg from 'express-openid-connect';
+const { auth, requiresAuth } = pkg;
 
 // skip Auth0 in tests — x-test-user header acts as the logged-in user
 const testMode = process.env.AUTH_DISABLED === 'true';
