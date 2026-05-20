@@ -32,6 +32,10 @@ export function createApp() {
     res.status(201).json(match);
   });
 
+  app.get('/profile', requireAuth(), (req, res) => {
+    res.json(req.oidc.user);
+  });
+
   app.post('/matches/:id/reports', requireAuth(), (req, res) => {
     const match = store.findMatch(req.params.id);
     if (!match) {
