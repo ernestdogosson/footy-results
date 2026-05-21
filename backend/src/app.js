@@ -13,7 +13,11 @@ export function createApp() {
   });
 
   app.get('/api/matches', (_req, res) => {
-    res.json(store.listMatches());
+    const matches = store.listMatches().map((match) => ({
+      ...match,
+      consensus: getConsensus(store.listReportsFor(match.id)),
+    }));
+    res.json(matches);
   });
 
   app.get('/api/matches/:id', (req, res) => {

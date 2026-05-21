@@ -53,6 +53,17 @@ describe('GET /matches', () => {
     const body = await res.json();
     expect(body.consensus).toEqual({ home_score: 2, away_score: 1 });
   });
+
+  it('includes consensus on each match in the list once enough reports match', async () => {
+    const match = store.addMatch({ home_team: 'Pumas', away_team: 'Eagles' });
+    for (let i = 0; i < 3; i++) {
+      store.addReport(match.id, { home_score: 4, away_score: 0, sub: `auth0|l${i}` });
+    }
+    const res = await fetch(`${baseURL}/api/matches`);
+    const body = await res.json();
+    const found = body.find((m) => m.id === match.id);
+    expect(found.consensus).toEqual({ home_score: 4, away_score: 0 });
+  });
 });
 
 describe('POST /matches', () => {
