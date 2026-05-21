@@ -14,7 +14,7 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="border-b border-line">
+    <header className="border-b border-line bg-canvas">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link to="/" className="flex items-center gap-2.5">
           <span className="h-2 w-2 rounded-full bg-accent" />
