@@ -1,0 +1,12 @@
+{
+  "name": "footy-results",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "test": "npm test --workspaces"
+  }
+}
