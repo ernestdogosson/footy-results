@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Avatar from '../Avatar.jsx';
 
 export default function Profile() {
   const [user, setUser] = useState(null);
@@ -31,6 +32,9 @@ export default function Profile() {
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold text-emerald-600 mb-4">Profile</h1>
+      <div className="mb-4">
+        <Avatar name={user.name} email={user.email} />
+      </div>
       <dl className="space-y-1">
         <div>
           <dt className="inline font-semibold">Name: </dt>
