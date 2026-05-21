@@ -19,32 +19,42 @@ export default function Profile() {
 
   if (needsLogin) {
     return (
-      <div className="p-6">
-        <a href="/login" className="text-emerald-600 hover:underline">
-          Log in to view your profile.
-        </a>
-      </div>
+      <main className="mx-auto max-w-2xl px-6 py-10">
+        <div className="rounded-lg border border-line bg-surface p-8 text-center">
+          <p className="mb-4 text-ink-muted">Log in to view your profile.</p>
+          <a
+            href="/login"
+            className="inline-block rounded-md bg-accent px-4 py-2 text-sm font-semibold text-canvas hover:brightness-110"
+          >
+            Log in
+          </a>
+        </div>
+      </main>
     );
   }
 
-  if (!user) return <div className="p-6">Loading…</div>;
+  if (!user) {
+    return (
+      <main className="mx-auto max-w-2xl px-6 py-10">
+        <p className="text-ink-muted">Loading…</p>
+      </main>
+    );
+  }
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold text-emerald-600 mb-4">Profile</h1>
-      <div className="mb-4">
-        <Avatar name={user.name} email={user.email} />
+    <main className="mx-auto max-w-2xl px-6 py-10">
+      <h1 className="mb-8 font-display text-4xl font-bold uppercase tracking-tight">
+        Profile
+      </h1>
+      <div className="rounded-lg border border-line bg-surface p-8">
+        <div className="flex items-center gap-5">
+          <Avatar name={user.name} email={user.email} />
+          <div>
+            <p className="font-display text-xl font-semibold">{user.name}</p>
+            <p className="text-sm text-ink-muted">{user.email}</p>
+          </div>
+        </div>
       </div>
-      <dl className="space-y-1">
-        <div>
-          <dt className="inline font-semibold">Name: </dt>
-          <dd className="inline">{user.name}</dd>
-        </div>
-        <div>
-          <dt className="inline font-semibold">Email: </dt>
-          <dd className="inline">{user.email}</dd>
-        </div>
-      </dl>
-    </div>
+    </main>
   );
 }

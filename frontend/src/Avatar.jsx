@@ -11,7 +11,7 @@ export default function Avatar({ name, email }) {
     : (email?.[0] ?? '?').toUpperCase();
 
   return (
-    <div className="w-12 h-12 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold">
+    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent font-display font-bold text-canvas">
       {initials}
     </div>
   );
