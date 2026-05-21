@@ -102,9 +102,17 @@ export default function MatchList() {
                 <span className="font-display text-lg font-semibold capitalize">
                   {m.home_team}
                 </span>
-                <span className="text-xs uppercase tracking-widest text-accent">
-                  vs
-                </span>
+                {m.consensus ? (
+                  <span className="font-display text-lg font-bold tabular-nums">
+                    {m.consensus.home_score}
+                    <span className="px-2 text-ink-muted">–</span>
+                    {m.consensus.away_score}
+                  </span>
+                ) : (
+                  <span className="text-xs uppercase tracking-widest text-accent">
+                    vs
+                  </span>
+                )}
                 <span className="text-right font-display text-lg font-semibold capitalize">
                   {m.away_team}
                 </span>
