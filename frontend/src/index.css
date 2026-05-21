@@ -1,1 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap');
 @import "tailwindcss";
+
+/* design tokens, also exposed as utilities (bg-canvas, text-ink, font-display, etc.) */
+@theme {
+  --color-canvas: #14110f;
+  --color-surface: #1c1815;
+  --color-line: #2a2421;
+  --color-ink: #f5f0e8;
+  --color-ink-muted: #a89e93;
+  --color-accent: #a3e635;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--color-canvas);
+  /* floodlight glow from top, fades to canvas */
+  background-image: radial-gradient(ellipse 90% 55% at 50% -10%, rgba(163, 230, 53, 0.12), transparent 65%);
+  background-attachment: fixed;
+  color: var(--color-ink);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  min-height: 100vh;
+}
