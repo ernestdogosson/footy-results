@@ -14,23 +14,28 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="flex items-center justify-between border-b p-4">
-      <Link to="/" className="text-2xl font-bold text-emerald-600">
-        Pitchside Scores
-      </Link>
-      <div className="flex items-center gap-4">
-        {user && (
-          <Link to="/profile" className="text-emerald-600 hover:underline">
-            Profile
-          </Link>
-        )}
-        {/* plain anchor — /login and /logout are Auth0 redirects handled by the backend */}
-        <a
-          href={user ? '/logout' : '/login'}
-          className="bg-emerald-600 text-white rounded px-3 py-1 hover:bg-emerald-700"
-        >
-          {user ? 'Log out' : 'Log in'}
-        </a>
+    <header className="border-b border-line">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+        <Link to="/" className="flex items-center gap-2.5">
+          <span className="h-2 w-2 rounded-full bg-accent" />
+          <span className="font-display text-xl font-bold uppercase tracking-tight">
+            Pitchside Scores
+          </span>
+        </Link>
+        <div className="flex items-center gap-6">
+          {user && (
+            <Link to="/profile" className="text-sm text-ink-muted hover:text-ink">
+              Profile
+            </Link>
+          )}
+          {/* plain anchor, /login and /logout are Auth0 redirects handled by the backend */}
+          <a
+            href={user ? '/logout' : '/login'}
+            className="rounded-md bg-accent px-4 py-2 text-sm font-semibold text-canvas hover:brightness-110"
+          >
+            {user ? 'Log out' : 'Log in'}
+          </a>
+        </div>
       </div>
     </header>
   );
