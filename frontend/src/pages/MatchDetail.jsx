@@ -53,56 +53,98 @@ export default function MatchDetail() {
   }
 
   if (notFound) {
-    return <div className="p-6 text-gray-500">Match not found.</div>;
+    return (
+      <main className="mx-auto max-w-4xl px-6 py-10">
+        <p className="text-ink-muted">Match not found.</p>
+      </main>
+    );
   }
   if (!match) {
-    return <div className="p-6 text-gray-500">Loading…</div>;
+    return (
+      <main className="mx-auto max-w-4xl px-6 py-10">
+        <p className="text-ink-muted">Loading…</p>
+      </main>
+    );
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold text-emerald-600 mb-4 capitalize">
-        {match.home_team} vs {match.away_team}
-      </h1>
-      {match.consensus ? (
-        <p className="text-xl mb-6">
-          Final score: {match.consensus.home_score}–{match.consensus.away_score}
-        </p>
-      ) : (
-        <p className="text-gray-500 mb-6">No consensus yet.</p>
-      )}
+    <main className="mx-auto max-w-4xl px-6 py-10">
+      <section className="mb-8 rounded-lg border border-line bg-surface p-8">
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-6">
+          <div className="text-center">
+            <p className="mb-2 text-xs uppercase tracking-widest text-ink-muted">Home</p>
+            <p className="font-display text-2xl font-bold uppercase capitalize">
+              {match.home_team}
+            </p>
+          </div>
+          <div className="text-center">
+            {match.consensus ? (
+              <p className="font-display text-6xl font-bold tabular-nums">
+                {match.consensus.home_score}
+                <span className="px-3 text-ink-muted">–</span>
+                {match.consensus.away_score}
+              </p>
+            ) : (
+              <p className="font-display text-4xl font-bold text-ink-muted">vs</p>
+            )}
+          </div>
+          <div className="text-center">
+            <p className="mb-2 text-xs uppercase tracking-widest text-ink-muted">Away</p>
+            <p className="font-display text-2xl font-bold uppercase capitalize">
+              {match.away_team}
+            </p>
+          </div>
+        </div>
 
-      <form onSubmit={submitReport} className="flex items-end gap-2">
-        <label className="flex flex-col text-sm capitalize">
-          {match.home_team}
-          <input
-            type="number"
-            value={homeScore}
-            onChange={(e) => setHomeScore(e.target.value)}
-            required
-            min="0"
-            className="border rounded p-1 w-16"
-          />
-        </label>
-        <label className="flex flex-col text-sm capitalize">
-          {match.away_team}
-          <input
-            type="number"
-            value={awayScore}
-            onChange={(e) => setAwayScore(e.target.value)}
-            required
-            min="0"
-            className="border rounded p-1 w-16"
-          />
-        </label>
-        <button
-          type="submit"
-          className="bg-emerald-600 text-white rounded px-3 py-1 hover:bg-emerald-700"
-        >
-          Report
-        </button>
-      </form>
-      {error && <p className="text-red-600 mt-2 text-sm">{error}</p>}
-    </div>
+        <div className="mt-6 flex justify-center">
+          {match.consensus ? (
+            <span className="rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-accent">
+              Final
+            </span>
+          ) : (
+            <span className="rounded-full border border-line px-3 py-1 text-xs font-semibold uppercase tracking-widest text-ink-muted">
+              Awaiting consensus
+            </span>
+          )}
+        </div>
+      </section>
+
+      <section className="rounded-lg border border-line bg-surface p-5">
+        <h2 className="mb-4 text-xs font-medium uppercase tracking-widest text-ink-muted">
+          Report a scoreline
+        </h2>
+        <form onSubmit={submitReport} className="flex flex-wrap items-end gap-3">
+          <label className="flex flex-col gap-1.5 text-sm">
+            <span className="capitalize text-ink-muted">{match.home_team}</span>
+            <input
+              type="number"
+              value={homeScore}
+              onChange={(e) => setHomeScore(e.target.value)}
+              required
+              min="0"
+              className="w-20 rounded-md border border-line bg-canvas px-3 py-2 text-ink focus:border-accent focus:outline-none"
+            />
+          </label>
+          <label className="flex flex-col gap-1.5 text-sm">
+            <span className="capitalize text-ink-muted">{match.away_team}</span>
+            <input
+              type="number"
+              value={awayScore}
+              onChange={(e) => setAwayScore(e.target.value)}
+              required
+              min="0"
+              className="w-20 rounded-md border border-line bg-canvas px-3 py-2 text-ink focus:border-accent focus:outline-none"
+            />
+          </label>
+          <button
+            type="submit"
+            className="rounded-md bg-accent px-4 py-2 text-sm font-semibold text-canvas hover:brightness-110"
+          >
+            Report
+          </button>
+        </form>
+        {error && <p className="mt-3 text-sm text-red-400">{error}</p>}
+      </section>
+    </main>
   );
 }
