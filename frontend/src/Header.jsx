@@ -18,13 +18,20 @@ export default function Header() {
       <Link to="/" className="text-2xl font-bold text-emerald-600">
         Footy Results
       </Link>
-      {/* plain anchor — /login and /logout are Auth0 redirects handled by the backend */}
-      <a
-        href={user ? '/logout' : '/login'}
-        className="bg-emerald-600 text-white rounded px-3 py-1 hover:bg-emerald-700"
-      >
-        {user ? 'Log out' : 'Log in'}
-      </a>
+      <div className="flex items-center gap-4">
+        {user && (
+          <Link to="/profile" className="text-emerald-600 hover:underline">
+            Profile
+          </Link>
+        )}
+        {/* plain anchor — /login and /logout are Auth0 redirects handled by the backend */}
+        <a
+          href={user ? '/logout' : '/login'}
+          className="bg-emerald-600 text-white rounded px-3 py-1 hover:bg-emerald-700"
+        >
+          {user ? 'Log out' : 'Log in'}
+        </a>
+      </div>
     </header>
   );
 }
