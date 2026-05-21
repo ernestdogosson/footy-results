@@ -45,8 +45,6 @@ export default function MatchList() {
 
   return (
     <div className="p-6">
-      <h1 className="text-3xl font-bold text-emerald-600 mb-4">Footy Results</h1>
-
       <form onSubmit={addFixture} className="flex items-end gap-2 mb-6">
         <label className="flex flex-col text-sm">
           Home team
