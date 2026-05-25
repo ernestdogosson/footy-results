@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { api, apiUrl } from './api.js';
 
 export default function Header() {
   const [user, setUser] = useState(null);
@@ -7,7 +8,7 @@ export default function Header() {
   useEffect(() => {
     // 200 = logged in, 401 = anonymous
     async function loadUser() {
-      const res = await fetch('/api/profile');
+      const res = await api('/api/profile');
       if (res.ok) setUser(await res.json());
     }
     loadUser();
@@ -30,7 +31,7 @@ export default function Header() {
           )}
           {/* plain anchor, /login and /logout are Auth0 redirects handled by the backend */}
           <a
-            href={user ? '/logout' : '/login'}
+            href={apiUrl(user ? '/logout' : '/login')}
             className="rounded-md bg-accent px-4 py-2 text-sm font-semibold text-canvas hover:brightness-110"
           >
             {user ? 'Log out' : 'Log in'}

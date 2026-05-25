@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { api } from '../api.js';
 
 export default function MatchList() {
   const [matches, setMatches] = useState([]);
@@ -8,7 +9,7 @@ export default function MatchList() {
   const [error, setError] = useState(null);
 
   async function loadMatches() {
-    const res = await fetch('/api/matches');
+    const res = await api('/api/matches');
     setMatches(await res.json());
   }
 
@@ -21,7 +22,7 @@ export default function MatchList() {
     setError(null);
     let res;
     try {
-      res = await fetch('/api/matches', {
+      res = await api('/api/matches', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ home_team: homeTeam, away_team: awayTeam }),
@@ -99,7 +100,7 @@ export default function MatchList() {
                 to={`/matches/${m.id}`}
                 className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 rounded-lg border border-line bg-surface p-5 transition hover:border-accent"
               >
-                <span className="font-display text-lg font-semibold capitalize">
+                <span className="font-display text-lg font-semibold uppercase">
                   {m.home_team}
                 </span>
                 {m.consensus ? (
@@ -113,7 +114,7 @@ export default function MatchList() {
                     vs
                   </span>
                 )}
-                <span className="text-right font-display text-lg font-semibold capitalize">
+                <span className="text-right font-display text-lg font-semibold uppercase">
                   {m.away_team}
                 </span>
               </Link>

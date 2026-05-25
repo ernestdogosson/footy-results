@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { api } from '../api.js';
 
 export default function MatchDetail() {
   const { id } = useParams();
@@ -10,7 +11,7 @@ export default function MatchDetail() {
   const [error, setError] = useState(null);
 
   async function loadMatch() {
-    const res = await fetch(`/api/matches/${id}`);
+    const res = await api(`/api/matches/${id}`);
     if (res.status === 404) {
       setNotFound(true);
       return;
@@ -27,7 +28,7 @@ export default function MatchDetail() {
     setError(null);
     let res;
     try {
-      res = await fetch(`/api/matches/${id}/reports`, {
+      res = await api(`/api/matches/${id}/reports`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -73,7 +74,7 @@ export default function MatchDetail() {
         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-6">
           <div className="text-center">
             <p className="mb-2 text-xs uppercase tracking-widest text-ink-muted">Home</p>
-            <p className="font-display text-2xl font-bold uppercase capitalize">
+            <p className="font-display text-2xl font-bold uppercase">
               {match.home_team}
             </p>
           </div>
@@ -90,7 +91,7 @@ export default function MatchDetail() {
           </div>
           <div className="text-center">
             <p className="mb-2 text-xs uppercase tracking-widest text-ink-muted">Away</p>
-            <p className="font-display text-2xl font-bold uppercase capitalize">
+            <p className="font-display text-2xl font-bold uppercase">
               {match.away_team}
             </p>
           </div>
@@ -115,7 +116,7 @@ export default function MatchDetail() {
         </h2>
         <form onSubmit={submitReport} className="flex flex-wrap items-end gap-3">
           <label className="flex flex-col gap-1.5 text-sm">
-            <span className="capitalize text-ink-muted">{match.home_team}</span>
+            <span className="uppercase text-ink-muted">{match.home_team}</span>
             <input
               type="number"
               value={homeScore}
@@ -126,7 +127,7 @@ export default function MatchDetail() {
             />
           </label>
           <label className="flex flex-col gap-1.5 text-sm">
-            <span className="capitalize text-ink-muted">{match.away_team}</span>
+            <span className="uppercase text-ink-muted">{match.away_team}</span>
             <input
               type="number"
               value={awayScore}

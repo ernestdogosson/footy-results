@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Avatar from '../Avatar.jsx';
+import { api, apiUrl } from '../api.js';
 
 export default function Profile() {
   const [user, setUser] = useState(null);
@@ -7,7 +8,7 @@ export default function Profile() {
 
   useEffect(() => {
     async function loadProfile() {
-      const res = await fetch('/api/profile');
+      const res = await api('/api/profile');
       if (res.status === 401) {
         setNeedsLogin(true);
         return;
@@ -23,7 +24,7 @@ export default function Profile() {
         <div className="rounded-lg border border-line bg-surface p-8 text-center">
           <p className="mb-4 text-ink-muted">Log in to view your profile.</p>
           <a
-            href="/login"
+            href={apiUrl('/login')}
             className="inline-block rounded-md bg-accent px-4 py-2 text-sm font-semibold text-canvas hover:brightness-110"
           >
             Log in
