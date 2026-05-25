@@ -17,6 +17,9 @@ export function authMiddleware() {
     };
   }
 
+  // cross-site cookie in prod: frontend and backend live on different domains
+  const isProd = process.env.NODE_ENV === 'production';
+
   return auth({
     authRequired: false,
     auth0Logout: true,
@@ -25,6 +28,12 @@ export function authMiddleware() {
     clientID: process.env.AUTH0_CLIENT_ID,
     secret: process.env.SESSION_SECRET,
     issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
+    session: {
+      cookie: {
+        secure: isProd,
+        sameSite: isProd ? 'none' : 'lax',
+      },
+    },
   });
 }
 
