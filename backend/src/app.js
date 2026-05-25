@@ -1,10 +1,19 @@
 import express from 'express';
+import cors from 'cors';
 import { store } from './store.js';
 import { authMiddleware, requireAuth } from './auth.js';
 import { getConsensus } from './consensus.js';
 
 export function createApp() {
   const app = express();
+
+  // only enable CORS when a frontend origin is configured (prod);
+  // dev goes through Vite's proxy so requests are same-origin
+  const frontendUrl = process.env.FRONTEND_URL;
+  if (frontendUrl) {
+    app.use(cors({ origin: frontendUrl, credentials: true }));
+  }
+
   app.use(express.json());
   app.use(authMiddleware());
 
