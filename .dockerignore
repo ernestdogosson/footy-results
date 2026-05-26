@@ -1,0 +1,11 @@
+node_modules
+**/node_modules
+.env
+**/.env
+*.log
+**/*.log
+frontend/dist
+artifacts
+docs
+.git
+.github

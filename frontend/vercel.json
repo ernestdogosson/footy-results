@@ -1,9 +1,0 @@
-{
-  "rewrites": [
-    { "source": "/login", "destination": "https://pitchside-scores-backend.onrender.com/login" },
-    { "source": "/logout", "destination": "https://pitchside-scores-backend.onrender.com/logout" },
-    { "source": "/callback", "destination": "https://pitchside-scores-backend.onrender.com/callback" },
-    { "source": "/api/:path*", "destination": "https://pitchside-scores-backend.onrender.com/api/:path*" },
-    { "source": "/health", "destination": "https://pitchside-scores-backend.onrender.com/health" }
-  ]
-}
