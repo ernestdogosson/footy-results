@@ -21,6 +21,13 @@ export function createApp() {
     res.json({ status: 'ok' });
   });
 
+  // backend is also the Auth0 callback host in prod, so bounce
+  // root hits over to the frontend after login/logout
+  app.get('/', (_req, res) => {
+    if (frontendUrl) return res.redirect(frontendUrl);
+    res.json({ name: 'Pitchside Scores API' });
+  });
+
   app.get('/api/matches', (_req, res) => {
     const matches = store.listMatches().map((match) => ({
       ...match,
