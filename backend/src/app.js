@@ -1,5 +1,4 @@
 import express from 'express';
-import cors from 'cors';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -8,17 +7,10 @@ import { authMiddleware, requireAuth } from './auth.js';
 import { getConsensus } from './consensus.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-const distDir = path.resolve(here, '../../frontend/dist');
+const defaultDistDir = path.resolve(here, '../../frontend/dist');
 
-export function createApp() {
+export function createApp({ distDir = defaultDistDir } = {}) {
   const app = express();
-
-  // only enable CORS when a frontend origin is configured (kept for the
-  // separated-deploy case); single-origin prod doesn't set FRONTEND_URL.
-  const frontendUrl = process.env.FRONTEND_URL;
-  if (frontendUrl) {
-    app.use(cors({ origin: frontendUrl, credentials: true }));
-  }
 
   app.use(express.json());
   app.use(authMiddleware());
