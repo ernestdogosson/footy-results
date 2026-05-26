@@ -31,7 +31,7 @@ export function authMiddleware() {
     session: {
       cookie: {
         secure: isProd,
-        sameSite: isProd ? 'none' : 'lax',
+        sameSite: isProd ? 'None' : 'Lax',
       },
     },
   });
