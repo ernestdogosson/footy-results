@@ -14,8 +14,10 @@ RUN npm run build --workspace=frontend
 FROM node:24-alpine
 WORKDIR /app/backend
 COPY backend/package.json ./
+COPY backend/prisma ./prisma
 RUN npm install --omit=dev
+RUN npx prisma generate
 COPY backend/src ./src
 COPY --from=frontend-builder /app/frontend/dist /app/frontend/dist
 EXPOSE 3000
-CMD ["node", "src/server.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node src/server.js"]
