@@ -1,30 +1,29 @@
-const matches = [];
-const reports = [];
-let nextMatchId = 1;
-let nextReportId = 1;
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export const store = {
   listMatches() {
-    return matches;
+    return prisma.match.findMany({ orderBy: { id: 'asc' } });
   },
 
   addMatch({ home_team, away_team }) {
-    const match = { id: nextMatchId++, home_team, away_team };
-    matches.push(match);
-    return match;
+    return prisma.match.create({ data: { home_team, away_team } });
   },
 
   findMatch(id) {
-    return matches.find((m) => m.id === Number(id));
+    const numeric = Number(id);
+    if (!Number.isInteger(numeric)) return null;
+    return prisma.match.findUnique({ where: { id: numeric } });
   },
 
   addReport(matchId, { home_score, away_score, sub }) {
-    const report = { id: nextReportId++, match_id: matchId, home_score, away_score, sub };
-    reports.push(report);
-    return report;
+    return prisma.report.create({
+      data: { match_id: Number(matchId), home_score, away_score, sub },
+    });
   },
 
   listReportsFor(matchId) {
-    return reports.filter((r) => r.match_id === Number(matchId));
+    return prisma.report.findMany({ where: { match_id: Number(matchId) } });
   },
 };

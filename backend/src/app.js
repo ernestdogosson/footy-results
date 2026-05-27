@@ -19,29 +19,32 @@ export function createApp({ distDir = defaultDistDir } = {}) {
     res.json({ status: 'ok' });
   });
 
-  app.get('/api/matches', (_req, res) => {
-    const matches = store.listMatches().map((match) => ({
-      ...match,
-      consensus: getConsensus(store.listReportsFor(match.id)),
-    }));
-    res.json(matches);
+  app.get('/api/matches', async (_req, res) => {
+    const matches = await store.listMatches();
+    const enriched = await Promise.all(
+      matches.map(async (match) => ({
+        ...match,
+        consensus: getConsensus(await store.listReportsFor(match.id)),
+      }))
+    );
+    res.json(enriched);
   });
 
-  app.get('/api/matches/:id', (req, res) => {
-    const match = store.findMatch(req.params.id);
+  app.get('/api/matches/:id', async (req, res) => {
+    const match = await store.findMatch(req.params.id);
     if (!match) {
       return res.status(404).json({ error: 'Match not found' });
     }
-    const consensus = getConsensus(store.listReportsFor(match.id));
+    const consensus = getConsensus(await store.listReportsFor(match.id));
     res.json({ ...match, consensus });
   });
 
-  app.post('/api/matches', requireAuth(), (req, res) => {
+  app.post('/api/matches', requireAuth(), async (req, res) => {
     const { home_team, away_team } = req.body;
     if (!home_team || !away_team) {
       return res.status(400).json({ error: 'home_team and away_team are required' });
     }
-    const match = store.addMatch({ home_team, away_team });
+    const match = await store.addMatch({ home_team, away_team });
     res.status(201).json(match);
   });
 
@@ -49,8 +52,8 @@ export function createApp({ distDir = defaultDistDir } = {}) {
     res.json(req.oidc.user);
   });
 
-  app.post('/api/matches/:id/reports', requireAuth(), (req, res) => {
-    const match = store.findMatch(req.params.id);
+  app.post('/api/matches/:id/reports', requireAuth(), async (req, res) => {
+    const match = await store.findMatch(req.params.id);
     if (!match) {
       return res.status(404).json({ error: 'Match not found' });
     }
@@ -58,7 +61,7 @@ export function createApp({ distDir = defaultDistDir } = {}) {
     if (typeof home_score !== 'number' || typeof away_score !== 'number') {
       return res.status(400).json({ error: 'home_score and away_score are required' });
     }
-    const report = store.addReport(match.id, {
+    const report = await store.addReport(match.id, {
       home_score,
       away_score,
       sub: req.oidc.user.sub,

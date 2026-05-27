@@ -29,7 +29,7 @@ describe('GET /matches', () => {
   });
 
   it('returns 200 and the match for a known id', async () => {
-    const match = store.addMatch({ home_team: 'Riverside', away_team: 'Hilltop' });
+    const match = await store.addMatch({ home_team: 'Riverside', away_team: 'Hilltop' });
     const res = await fetch(`${baseURL}/api/matches/${match.id}`);
     expect(res.status).toBe(200);
     const body = await res.json();
@@ -38,16 +38,16 @@ describe('GET /matches', () => {
   });
 
   it('includes consensus: null when there are no reports', async () => {
-    const match = store.addMatch({ home_team: 'Lakers', away_team: 'Foxes' });
+    const match = await store.addMatch({ home_team: 'Lakers', away_team: 'Foxes' });
     const res = await fetch(`${baseURL}/api/matches/${match.id}`);
     const body = await res.json();
     expect(body.consensus).toBeNull();
   });
 
   it('includes the agreed scoreline once enough reports match', async () => {
-    const match = store.addMatch({ home_team: 'Wolves', away_team: 'Bears' });
+    const match = await store.addMatch({ home_team: 'Wolves', away_team: 'Bears' });
     for (let i = 0; i < 3; i++) {
-      store.addReport(match.id, { home_score: 2, away_score: 1, sub: `auth0|u${i}` });
+      await store.addReport(match.id, { home_score: 2, away_score: 1, sub: `auth0|u${i}` });
     }
     const res = await fetch(`${baseURL}/api/matches/${match.id}`);
     const body = await res.json();
@@ -55,9 +55,9 @@ describe('GET /matches', () => {
   });
 
   it('includes consensus on each match in the list once enough reports match', async () => {
-    const match = store.addMatch({ home_team: 'Pumas', away_team: 'Eagles' });
+    const match = await store.addMatch({ home_team: 'Pumas', away_team: 'Eagles' });
     for (let i = 0; i < 3; i++) {
-      store.addReport(match.id, { home_score: 4, away_score: 0, sub: `auth0|l${i}` });
+      await store.addReport(match.id, { home_score: 4, away_score: 0, sub: `auth0|l${i}` });
     }
     const res = await fetch(`${baseURL}/api/matches`);
     const body = await res.json();
@@ -95,7 +95,7 @@ describe('POST /matches', () => {
 
 describe('POST /matches/:id/reports', () => {
   it('returns 401 when not logged in', async () => {
-    const match = store.addMatch({ home_team: 'Eastside', away_team: 'Westside' });
+    const match = await store.addMatch({ home_team: 'Eastside', away_team: 'Westside' });
     const res = await fetch(`${baseURL}/api/matches/${match.id}/reports`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -105,7 +105,7 @@ describe('POST /matches/:id/reports', () => {
   });
 
   it('returns 201 and the report when logged in', async () => {
-    const match = store.addMatch({ home_team: 'Northtown', away_team: 'Southtown' });
+    const match = await store.addMatch({ home_team: 'Northtown', away_team: 'Southtown' });
     const res = await fetch(`${baseURL}/api/matches/${match.id}/reports`, {
       method: 'POST',
       headers: {
